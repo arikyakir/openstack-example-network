@@ -30,7 +30,11 @@ inputs:
     default: { get_secret: keystone_region }
 
   external_network_name:
-    description: Openstack tenant external network name.
+    description: Openstack tenant external network name
+
+  provider_network_name:
+    description: Openstack tenant provider network name - for CFY manager internally
+    default:  provider
 
   nameservers:
     default: [8.8.4.4, 8.8.8.8]
@@ -69,6 +73,13 @@ node_templates:
       use_external_resource: true
       resource_id: { get_input: external_network_name }
 
+  provider_network:
+    type: cloudify.openstack.nodes.Network
+    properties:
+      openstack_config: *client_config
+      use_external_resource: true
+      resource_id: { get_input: provider_network_name }
+
   public_network:
     type: cloudify.openstack.nodes.Network
     properties:
@@ -86,6 +97,8 @@ node_templates:
     relationships:
     - type: cloudify.relationships.connected_to
       target: external_network
+    - type: cloudify.relationships.connected_to
+      target: provider_network
 
   public_subnet:
     type: cloudify.openstack.nodes.Subnet
@@ -136,3 +149,15 @@ outputs:
 
   private_subnet:
     value: { get_attribute: [ private_subnet, external_id ] }
+
+  external_network_name:
+    value: { get_attribute: [ external_network, resource_id ] }
+
+  public_network_router_name:
+    value: { get_attribute: [ public_network_router, resource_id ] }
+
+  public_network_name:
+    value: { get_attribute: [ public_network, resource_id ] }
+
+  private_network_name:
+    value: { get_attribute: [ private_network, resource_id ] }
