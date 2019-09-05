@@ -9,6 +9,14 @@ imports:
 
 inputs:
 
+  external_network_name:
+    description: Openstack tenant external network name
+     default:  external_network
+
+  provider_network_name:
+    description: Openstack tenant provider network name - for CFY manager internally
+    default:  provider
+
   username:
     description: OS_USERNAME as specified in Openstack RC file.
     default: { get_secret: keystone_username }
@@ -28,13 +36,6 @@ inputs:
   region:
     description: OS_REGION_NAME as specified in Openstack RC file.
     default: { get_secret: keystone_region }
-
-  external_network_name:
-    description: Openstack tenant external network name
-
-  provider_network_name:
-    description: Openstack tenant provider network name - for CFY manager internally
-    default:  provider
 
   nameservers:
     default: [8.8.4.4, 8.8.8.8]
