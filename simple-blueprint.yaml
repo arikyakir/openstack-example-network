@@ -11,7 +11,7 @@ inputs:
 
   external_network_name:
     description: Openstack tenant external network name
-     default:  external_network
+    default:  external_network
 
   provider_network_name:
     description: Openstack tenant provider network name - for CFY manager internally
